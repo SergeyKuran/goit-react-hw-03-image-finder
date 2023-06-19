@@ -1,12 +1,27 @@
-import React from 'react';
-import { Component } from 'react';
+import React, { Component } from 'react';
+import { searchText } from 'Data/pixebayApi';
 
 import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
-  state = {};
+  state = {
+    searchText: '',
+    value: '',
+  };
+
+  componentDidUpdate() {
+    searchText(this.state.searchText);
+  }
+
+  hangleChange = evt => {
+    const { value } = evt.target;
+    this.setState({ searchText: value });
+  };
+
+  onSubmit = () => {};
 
   render() {
+    // const { value } = this.state;
     return (
       <header className={css.Searchbar}>
         <form className={css.SearchForm}>
@@ -15,6 +30,7 @@ class Searchbar extends Component {
           </button>
 
           <input
+            onChange={this.hangleChange}
             className={css.SearchFormInput}
             type="text"
             autoComplete="off"
