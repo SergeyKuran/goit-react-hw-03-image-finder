@@ -1,30 +1,38 @@
 import React, { Component } from 'react';
-import { searchText } from 'Data/pixebayApi';
+import PropTypes from 'prop-types';
 
 import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
   state = {
     searchText: '',
-    value: '',
   };
-
-  componentDidUpdate() {
-    searchText(this.state.searchText);
-  }
 
   hangleChange = evt => {
     const { value } = evt.target;
     this.setState({ searchText: value });
   };
 
-  onSubmit = () => {};
+  onSubmit = evt => {
+    evt.preventDefault();
+    const { value } = evt.target;
+    const { onSubmit } = this.props;
+    this.setState({ searchText: value });
+
+    if (this.state.searchText.trim() === '') {
+      alert('Please enter text from search images and photos');
+      return;
+    }
+
+    onSubmit(this.state.searchText);
+    this.setState({ searchText: '' });
+  };
 
   render() {
-    // const { value } = this.state;
+    const { searchText } = this.state;
     return (
       <header className={css.Searchbar}>
-        <form className={css.SearchForm}>
+        <form className={css.SearchForm} onSubmit={this.onSubmit}>
           <button type="submit" className={css.SearchFormButton}>
             <span className={css.SearchFormButtonLabel}>Search</span>
           </button>
@@ -32,6 +40,7 @@ class Searchbar extends Component {
           <input
             onChange={this.hangleChange}
             className={css.SearchFormInput}
+            value={searchText}
             type="text"
             autoComplete="off"
             autoFocus
@@ -42,5 +51,9 @@ class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  searchText: PropTypes.string,
+};
 
 export default Searchbar;
