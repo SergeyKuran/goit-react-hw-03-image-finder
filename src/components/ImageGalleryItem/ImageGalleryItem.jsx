@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import css from './ImageGalleryItem.module.css';
 
 class ImageGalleryItem extends Component {
@@ -32,5 +34,9 @@ class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  searchText: PropTypes.object.isRequired,
+};
 
 export default ImageGalleryItem;
