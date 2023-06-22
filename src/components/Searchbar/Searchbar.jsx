@@ -15,9 +15,7 @@ class Searchbar extends Component {
 
   onSubmit = evt => {
     evt.preventDefault();
-    const { value } = evt.target;
     const { onSubmit } = this.props;
-    this.setState({ searchText: value });
 
     if (this.state.searchText.trim() === '') {
       alert('Please enter text from search images and photos');
