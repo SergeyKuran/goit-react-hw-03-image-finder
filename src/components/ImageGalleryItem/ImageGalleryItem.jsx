@@ -7,6 +7,7 @@ class ImageGalleryItem extends Component {
   state = {
     searchText: '',
     error: null,
+    images: [],
   };
 
   componentDidUpdate(nextProps, _) {
@@ -20,31 +21,43 @@ class ImageGalleryItem extends Component {
       )
         .then(resp => {
           if (resp.ok) {
-            resp.json();
+            return resp.json();
           }
           return Promise.reject(new Error());
         })
-        .then(data => console.log(data, 'data'))
+        .then(data =>
+          this.setState(prevState => ({
+            images: [...prevState.images, ...data.hits],
+          }))
+        )
         .catch(error => this.setState({ error }));
     }
   }
 
+  getImages = () => {};
+
   render() {
-    console.log(this.state);
+    const { images } = this.state;
     return (
-      <li className={css.ImageGalleryItem}>
-        <img
-          className={css.ImageGalleryItemImage}
-          src={this.props.searchText}
-          alt=""
-        />
-      </li>
+      <>
+        {images.map(({ id, largeImageURL }) => (
+          <li key={id} className={css.ImageGalleryItem}>
+            <img
+              className={css.ImageGalleryItemImage}
+              src={largeImageURL}
+              alt=""
+            />
+          </li>
+        ))}
+      </>
     );
   }
 }
 
 ImageGalleryItem.propTypes = {
   searchText: PropTypes.string.isRequired,
+  error: PropTypes.bool.isRequired,
+  images: PropTypes.arrayOf(PropTypes.object.isRequired),
 };
 
 export default ImageGalleryItem;
