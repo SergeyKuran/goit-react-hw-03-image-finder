@@ -10,34 +10,34 @@ class Searchbar extends Component {
 
   hangleChange = evt => {
     const { value } = evt.target;
-    this.setState({ searchText: value });
+    this.setState({ searchText: value.toLowerCase() });
   };
 
-  onSubmit = evt => {
+  onFormSubmit = evt => {
     evt.preventDefault();
-    const { onSubmit } = this.props;
+    const { searchText } = this.state;
 
-    if (this.state.searchText.trim() === '') {
+    if (searchText.trim() === '') {
       alert('Please enter text from search images and photos');
       return;
     }
 
-    onSubmit(this.state.searchText);
+    this.props.onFormSubmitApp(searchText);
     this.setState({ searchText: '' });
   };
 
   render() {
     const { searchText } = this.state;
     return (
-      <header className={css.Searchbar}>
-        <form className={css.SearchForm} onSubmit={this.onSubmit}>
-          <button type="submit" className={css.SearchFormButton}>
-            <span className={css.SearchFormButtonLabel}>Search</span>
+      <header className={css.searchbar}>
+        <form className={css.searchForm} onSubmit={this.onFormSubmit}>
+          <button type="submit" className={css.searchFormButton}>
+            <span className={css.searchFormButtonLabel}>Search</span>
           </button>
 
           <input
             onChange={this.hangleChange}
-            className={css.SearchFormInput}
+            className={css.searchFormInput}
             value={searchText}
             type="text"
             autoComplete="off"
