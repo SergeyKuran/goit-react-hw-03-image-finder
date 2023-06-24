@@ -1,23 +1,22 @@
 import PropTypes from 'prop-types';
 
 import ImageGalleryItem from 'components/ImageGalleryItem';
-import Button from 'components/Button';
 
 import css from './ImageGallety.module.css';
 
-const ImageGallery = ({ text }) => {
+const ImageGallery = ({ text, images }) => {
   return (
     <>
-      <ul className={css.ImageGallery}>
-        <ImageGalleryItem searchText={text} />
+      <ul className={css.imageGallery}>
+        <ImageGalleryItem images={images} />
       </ul>
-      {text && <Button />}
     </>
   );
 };
 
 ImageGallery.propTypes = {
   text: PropTypes.string.isRequired,
+  images: PropTypes.arrayOf(PropTypes.object.isRequired),
 };
 
 export default ImageGallery;
