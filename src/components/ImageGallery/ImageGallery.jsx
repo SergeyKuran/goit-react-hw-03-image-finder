@@ -4,7 +4,7 @@ import ImageGalleryItem from 'components/ImageGalleryItem';
 
 import css from './ImageGallety.module.css';
 
-const ImageGallery = ({ text, images }) => {
+const ImageGallery = ({ images }) => {
   return (
     <>
       <ul className={css.imageGallery}>
@@ -15,7 +15,6 @@ const ImageGallery = ({ text, images }) => {
 };
 
 ImageGallery.propTypes = {
-  text: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object.isRequired),
 };
 

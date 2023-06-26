@@ -4,6 +4,9 @@ const Loader = () => {
   return (
     <ThreeCircles
       height="100"
+      position="relative"
+      top="50%"
+      left="50%"
       width="100"
       color="#4fa94d"
       wrapperStyle={{}}

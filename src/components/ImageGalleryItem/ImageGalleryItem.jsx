@@ -1,13 +1,34 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Modal from 'components/Modal';
 import css from './ImageGalleryItem.module.css';
 
 class ImageGalleryItem extends Component {
-  onClickModal = () => {};
+  state = {
+    isVisible: false,
+  };
+
+  onSnowModal = () => {
+    this.setState({ isVisible: true });
+  };
+
+  onHideModal = () => {
+    this.setState({
+      isVisible: false,
+    });
+  };
+
+  // onClickEsc = evt => {
+  //   if (evt.target.code === 'ESC') {
+  //     this.onHideModal();
+  //   }
+  // };
 
   render() {
+    const { isVisible } = this.state;
     const { images } = this.props;
+
     return (
       <>
         {images.map(({ id, largeImageURL, webformatURL }) => (
@@ -17,9 +38,12 @@ class ImageGalleryItem extends Component {
               src={largeImageURL}
               alt=""
               onClick={() => {
-                this.onClickModal();
+                this.onSnowModal();
               }}
             />
+            {isVisible && (
+              <Modal onClick={this.onHideModal} image={webformatURL} />
+            )}
           </li>
         ))}
       </>
@@ -28,9 +52,7 @@ class ImageGalleryItem extends Component {
 }
 
 ImageGalleryItem.propTypes = {
-  searchText: PropTypes.string,
-  error: PropTypes.node,
-  images: PropTypes.arrayOf(PropTypes.object.isRequired),
+  isVisible: PropTypes.bool,
 };
 
 export default ImageGalleryItem;
