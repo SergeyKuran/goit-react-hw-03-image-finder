@@ -62,17 +62,14 @@ class App extends Component {
   };
 
   render() {
-    const { searchText, images, isLoading } = this.state;
+    const { images, isLoading } = this.state;
 
     return (
       <div className={css.app}>
         <Searchbar onFormSubmitApp={this.onSubmit} />
-
-        <ImageGallery text={searchText} images={images} />
+        <ImageGallery images={images} />
         {isLoading && <Loader />}
-        {images.length > 0 && images.length !== images.totalHits && (
-          <Button onClick={this.onButtonClick} />
-        )}
+        {images.length > 0 && <Button onClick={this.onButtonClick} />}
       </div>
     );
   }
@@ -80,6 +77,11 @@ class App extends Component {
 
 App.propTypes = {
   searchText: PropTypes.string,
+  eror: PropTypes.bool,
+  images: PropTypes.arrayOf(PropTypes.object),
+  isLoading: PropTypes.bool,
+  page: PropTypes.number,
+  totalImages: PropTypes.number,
 };
 
 export default App;
