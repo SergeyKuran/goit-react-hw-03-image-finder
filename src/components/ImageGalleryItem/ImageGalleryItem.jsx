@@ -7,45 +7,67 @@ import css from './ImageGalleryItem.module.css';
 class ImageGalleryItem extends Component {
   state = {
     isVisible: false,
+    image: '',
   };
 
-  onSnowModal = () => {
-    this.setState({ isVisible: true });
-  };
-
-  onHideModal = () => {
+  onSaveImgModal = evt => {
     this.setState({
-      isVisible: false,
+      image: evt,
+      isVisible: true,
     });
   };
 
-  // onClickEsc = evt => {
-  //   if (evt.target.code === 'ESC') {
-  //     this.onHideModal();
-  //   }
-  // };
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = event => {
+    if (event.code === 'Escape') {
+      this.onHideModal();
+    }
+  };
+
+  handleOverlayClick = event => {
+    if (event.target === event.currentTarget) {
+      this.onHideModal();
+    }
+  };
+
+  onHideModal = () => {
+    this.setState({ isVisible: false });
+  };
 
   render() {
-    const { isVisible } = this.state;
-    const { images } = this.props;
+    const { image, isVisible } = this.state;
 
     return (
       <>
-        {images.map(({ id, largeImageURL, webformatURL }) => (
-          <li key={id} className={css.imageGalleryItem}>
+        {this.props.images.map(({ id, largeImageURL, webformatURL }) => (
+          <li
+            key={id}
+            className={css.imageGalleryItem}
+            onClick={() => {
+              this.onSaveImgModal(largeImageURL);
+            }}
+          >
             <img
               className={css.imageGalleryItemImage}
-              src={largeImageURL}
+              src={webformatURL}
               alt=""
-              onClick={() => {
-                this.onSnowModal();
-              }}
             />
-            {isVisible && (
-              <Modal onClick={this.onHideModal} image={webformatURL} />
-            )}
           </li>
         ))}
+        {isVisible && (
+          <Modal
+            image={image}
+            handleOverlayClick={this.onHideModal}
+            handleKeyDown={this.handleKeyDown}
+          />
+        )}
       </>
     );
   }
@@ -53,6 +75,7 @@ class ImageGalleryItem extends Component {
 
 ImageGalleryItem.propTypes = {
   isVisible: PropTypes.bool,
+  image: PropTypes.string,
 };
 
 export default ImageGalleryItem;
