@@ -40,6 +40,7 @@ class App extends Component {
         .then(data =>
           this.setState(prevState => ({
             images: [...prevState.images, ...data.hits],
+            totalImages: data.total,
           }))
         )
         .catch(error => this.setState({ error }))
@@ -49,9 +50,9 @@ class App extends Component {
     }
   }
 
-  onSubmit = text => {
+  onSubmit = value => {
     this.setState({
-      searchText: text,
+      searchText: value,
       images: [],
       page: 1,
     });
@@ -62,14 +63,16 @@ class App extends Component {
   };
 
   render() {
-    const { images, isLoading } = this.state;
+    const { images, isLoading, totalImages } = this.state;
 
     return (
       <div className={css.app}>
         <Searchbar onFormSubmitApp={this.onSubmit} />
         <ImageGallery images={images} />
         {isLoading && <Loader />}
-        {images.length > 0 && <Button onClick={this.onButtonClick} />}
+        {images.length > 0 && images.length < totalImages && (
+          <Button onClick={this.onButtonClick} />
+        )}
       </div>
     );
   }
@@ -78,7 +81,7 @@ class App extends Component {
 App.propTypes = {
   searchText: PropTypes.string,
   eror: PropTypes.bool,
-  images: PropTypes.arrayOf(PropTypes.object),
+  images: PropTypes.arrayOf(PropTypes.object.isRequired),
   isLoading: PropTypes.bool,
   page: PropTypes.number,
   totalImages: PropTypes.number,
