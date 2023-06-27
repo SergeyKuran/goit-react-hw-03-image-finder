@@ -1,25 +1,23 @@
-import css from './Modal.module.css';
-
 import PropTypes from 'prop-types';
 
-const Modal = ({ onClick, image }) => {
+import css from './Modal.module.css';
+
+const Modal = ({ image, handleKeyDown, handleOverlayClick }) => {
   return (
-    <div
-      className={css.overlay}
-      onClick={() => {
-        onClick();
-      }}
-    >
-      <div className={css.modal}>
-        <img src={image} alt="" />
+    <>
+      <div className={css.overlay} onClick={handleOverlayClick}>
+        <div className={css.modal} onKeyDown={handleKeyDown}>
+          <img src={image} alt="" />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 Modal.propTypes = {
-  onClick: PropTypes.func.isRequired,
   image: PropTypes.string.isRequired,
+  handleKeyDown: PropTypes.func.isRequired,
+  handleOverlayClick: PropTypes.func.isRequired,
 };
 
 export default Modal;
